@@ -23,9 +23,7 @@ module.exports = function (url, init) {
 
   if (options.method === "POST") {
     return sql(
-      `select * from http(('POST','${url}','${stringifyHeaders(
-        headers
-      )}', '${content_type}', '${content}'))`
+      `select * from http(('POST','${url}','${headers}', '${content_type}', '${content}'))`
     )[0];
   }
 
