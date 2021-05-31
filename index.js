@@ -1,24 +1,12 @@
 module.exports = function (url, init) {
-  const content_type = _tern(
-    init.headers,
-    undefined,
-    "application/json",
-    _tern(
-      init.headers["Content-Type"],
-      undefined,
-      "application/json",
-      init.headers["Content-Type"]
-    )
-  );
+  const content_type = getContentType(init.headers);
+
   const options = {
     method: _co(init.method, "GET"), // *GET, POST, PUT, DELETE, etc.
     mode: _co(init.mode, "cors"), // no-cors, *cors, same-origin
     cache: _co(init.cache, "default"), // *default, no-cache, reload, force-cache, only-if-cached
     credentials: _co(init.credentials, "same-origin"), // include, *same-origin, omit
-    headers: {
-      ...init.headers,
-      "Content-Type": content_type,
-    },
+    headers: init.headers,
     redirect: _co(init.redirect, "follow"), // manual, *follow, error
     referrerPolicy: _co(init.referrerPolicy, "no-referrer-when-downgrade"), // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
     body: init.body, // body data type must match "Content-Type" header
@@ -61,6 +49,20 @@ module.exports = function (url, init) {
 
   throw new Error("Invalid method provided");
 };
+
+function getContentType(headers) {
+  return _tern(
+    headers,
+    undefined,
+    "application/json",
+    _tern(
+      headers["Content-Type"],
+      undefined,
+      "application/json",
+      headers["Content-Type"]
+    )
+  );
+}
 
 function _co(value, fallback) {
   if (value) return value;
