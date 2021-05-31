@@ -12,7 +12,7 @@ module.exports = function (url, init) {
     body: init.body, // body data type must match "Content-Type" header
   };
 
-  const content = JSON.stringify(options.body);
+  const content = options.body;
   const headers = stringifyHeaders(options.headers);
 
   if (options.method === "GET") {
