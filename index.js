@@ -1,10 +1,24 @@
 module.exports = function (url, init) {
+  const content_type = _tern(
+    init.headers,
+    undefined,
+    "application/json",
+    _tern(
+      init.headers["Content-Type"],
+      undefined,
+      "application/json",
+      init.headers["Content-Type"]
+    )
+  );
   const options = {
     method: _co(init.method, "GET"), // *GET, POST, PUT, DELETE, etc.
     mode: _co(init.mode, "cors"), // no-cors, *cors, same-origin
     cache: _co(init.cache, "default"), // *default, no-cache, reload, force-cache, only-if-cached
     credentials: _co(init.credentials, "same-origin"), // include, *same-origin, omit
-    headers: init.headers,
+    headers: {
+      ...init.headers,
+      "Content-Type": content_type,
+    },
     redirect: _co(init.redirect, "follow"), // manual, *follow, error
     referrerPolicy: _co(init.referrerPolicy, "no-referrer-when-downgrade"), // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
     body: init.body, // body data type must match "Content-Type" header
@@ -29,9 +43,7 @@ module.exports = function (url, init) {
 
   if (options.method === "PUT") {
     return sql(
-      `select * from http(('PUT','${url}','${headers}','${
-        content_type || "application/x-www-form-urlencoded"
-      }', '${params}'))`
+      `select * from http(('PUT','${url}','${headers}','${content_type}', '${content}'))`
     )[0];
   }
 
@@ -43,9 +55,7 @@ module.exports = function (url, init) {
 
   if (options.method === "PATCH") {
     return sql(
-      `select * from http(('PATCH','${url}','${headers}','${
-        content_type || "application/x-www-form-urlencoded"
-      }', '${params}'))`
+      `select * from http(('PATCH','${url}','${headers}','${content_type}', '${content}'))`
     )[0];
   }
 
