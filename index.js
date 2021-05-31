@@ -4,13 +4,13 @@ module.exports = function (url, init) {
     mode: _co(init.mode, "cors"), // no-cors, *cors, same-origin
     cache: _co(init.cache, "default"), // *default, no-cache, reload, force-cache, only-if-cached
     credentials: _co(init.credentials, "same-origin"), // include, *same-origin, omit
-    headers,
+    headers: init.headers,
     redirect: _co(init.redirect, "follow"), // manual, *follow, error
     referrerPolicy: _co(init.referrerPolicy, "no-referrer-when-downgrade"), // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body, // body data type must match "Content-Type" header
+    body: init.body, // body data type must match "Content-Type" header
   };
 
-  const content = JSON.stringify(body);
+  const content = JSON.stringify(options.body);
   const headers = stringifyHeaders(options.headers);
 
   if (options.method === "GET") {
