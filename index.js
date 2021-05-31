@@ -57,15 +57,23 @@ function _co(value, fallback) {
   return fallback;
 }
 
+function _tern(value, target, a, b) {
+  if (value === target) return a;
+  return b;
+}
+
 function stringifyHeaders(headers) {
   const keys = Object.keys(headers);
   return keys.reduce((prev, current, index) => {
     const value = headers[current];
     return (
       prev +
-      `\"(${current},\\\"${value}\\\")\"${
-        index === keys.length - 1 ? "}" : ","
-      }`
+      `\"(${current},\\\"${value}\\\")\"${_tern(
+        index,
+        keys.length - 1,
+        "}",
+        ","
+      )}`
     );
   }, "{");
 }
