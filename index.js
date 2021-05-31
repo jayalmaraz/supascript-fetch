@@ -1,4 +1,4 @@
-module.exports.fetch = function (url, init) {
+module.exports = function (url, init) {
   const options = {
     method: _co(init.method, "GET"), // *GET, POST, PUT, DELETE, etc.
     mode: _co(init.mode, "cors"), // no-cors, *cors, same-origin
