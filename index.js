@@ -1,12 +1,12 @@
 module.exports.fetch = function (url, init) {
   const options = {
-    method: init.method ?? "GET", // *GET, POST, PUT, DELETE, etc.
-    mode: init.mode ?? "cors", // no-cors, *cors, same-origin
-    cache: init.cache ?? "default", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: init.credentials ?? "same-origin", // include, *same-origin, omit
+    method: _co(init.method, "GET"), // *GET, POST, PUT, DELETE, etc.
+    mode: _co(init.mode, "cors"), // no-cors, *cors, same-origin
+    cache: _co(init.cache, "default"), // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: _co(init.credentials, "same-origin"), // include, *same-origin, omit
     headers,
-    redirect: init.redirect ?? "follow", // manual, *follow, error
-    referrerPolicy: init.referrerPolicy ?? "no-referrer-when-downgrade", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    redirect: _co(init.redirect, "follow"), // manual, *follow, error
+    referrerPolicy: _co(init.referrerPolicy, "no-referrer-when-downgrade"), // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
     body, // body data type must match "Content-Type" header
   };
 
@@ -51,6 +51,11 @@ module.exports.fetch = function (url, init) {
 
   throw new Error("Invalid method provided");
 };
+
+function _co(value, fallback) {
+  if (value) return value;
+  return fallback;
+}
 
 function stringifyHeaders(headers) {
   const keys = Object.keys(headers);
